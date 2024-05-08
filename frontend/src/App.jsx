@@ -1,25 +1,27 @@
-import { useEffect } from 'react'
-
-import './App.css'
+import { useState, useEffect } from 'react';
 
 function App() {
+  const [cities, setCities] = useState([]);
 
-    useEffect(() => {
-        fetch('/api')
-          .then((response) => response.json())
-          .then((result) => {
-            alert(`Hello ${result.hello}!`)
-          })
-      }, [])
-
+  useEffect(() => {
+    fetch('/cities')
+      .then(response => response.json())
+      .then(data => setCities(data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
 
   return (
-    <>
-
-
-
-    </>
-  )
+    <div>
+      <h1>Cities and populations</h1>
+      <ul>
+        {cities.map(city => (
+          <li key={city.id}>
+            {city.name}: {city.population}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
-export default App
+export default App;
